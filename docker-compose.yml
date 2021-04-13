@@ -1,0 +1,43 @@
+version: "3.8"
+services:
+  # mongodb:
+  #   image: 'mongo:4.4.4'
+  #   container_name: mongodb_chess
+  #   ports:
+  #     - 27017:27017
+  #   volumes:
+  #     - ./mongodb-data:/data/db   
+  #   environment:
+  #     - MONGO_INITDB_ROOT_USERNAME:admin
+  #     - MONGO_INITDB_ROOT_PASSWORD:admin123
+  #     - MONGO_INITDB_DATABASE:chess-app-db
+  mymongo:
+    image: mongo:4.4.4
+    container_name: mymongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongodb-data:/data/db   
+      - ./mongo-init/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: admin
+    networks:
+      - mongonetwork 
+  
+  chess-board-app:
+    image: "node:8.9.1"
+    container_name: chess-board-app
+    working_dir: /home/node/app
+    ports:
+      - 4003:4003
+    volumes:
+      - ./chess-app-node:/home/node/app
+    command: npm start  
+    networks:
+      - mongonetwork 
+
+networks:
+  mongonetwork:     

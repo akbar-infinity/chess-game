@@ -7,11 +7,11 @@ db.auth("root", "example");
 db = db.getSiblingDB("chess-app-db");
 
 db.createUser({
-  user: "mah",
-  pwd: "mah123",
+  user: "chess_user",
+  pwd: "chess_user123",
   roles: [
     {
-      role: "admin",
+      role: "dbOwner",
       db: "chess-app-db",
     },
   ],
